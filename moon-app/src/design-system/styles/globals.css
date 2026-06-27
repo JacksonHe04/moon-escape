@@ -1,13 +1,34 @@
-/**
- * MOON Global Styles
- *
- * - Reset 基础
- * - 引入 Google Fonts（思源宋体 + Noto Serif + JetBrains Mono + Inter）
- * - 把 design tokens 落到 CSS vars（ThemeProvider 同步覆盖）
- * - 给全局元素（html/body/button/input/textarea）打底
- */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@source "../../**/*.{ts,tsx}";
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+@theme {
+  --color-appBg: var(--moon-appBg);
+  --color-sidebarBg: var(--moon-sidebarBg);
+  --color-sidebarHoverBg: var(--moon-sidebarHoverBg);
+  --color-sidebarActiveBg: var(--moon-sidebarActiveBg);
+  --color-paneBg: var(--moon-paneBg);
+  --color-fg: var(--moon-fg);
+  --color-fgSecondary: var(--moon-fgSecondary);
+  --color-fgMuted: var(--moon-fgMuted);
+  --color-fgInverse: var(--moon-fgInverse);
+  --color-borderSubtle: var(--moon-borderSubtle);
+  --color-borderStrong: var(--moon-borderStrong);
+  --color-accent: var(--moon-accent);
+  --color-accentHover: var(--moon-accentHover);
+  --color-accentMuted: var(--moon-accentMuted);
+  --color-contract: var(--moon-contract);
+  --color-source: var(--moon-source);
+  --color-danger: var(--moon-danger);
+  --color-warning: var(--moon-warning);
+  --color-success: var(--moon-success);
+}
+
+:root {
+  --moon-font-serif: 'Lyon-Text', 'Georgia', ui-serif, serif;
+  --moon-font-sans: 'Inter', sans-serif;
+  --moon-font-mono: 'JetBrains Mono', monospace;
+}
 
 /* ─── Reset ────────────────────────────────────────────── */
 *,
@@ -24,7 +45,7 @@ body {
 }
 
 body {
-  font-family: var(--moon-font-serif, 'Noto Serif', serif);
+  font-family: var(--moon-font-serif, 'Lyon-Text', 'Georgia', ui-serif, serif);
   font-size: 16px;
   line-height: 1.7;
   color: var(--moon-fg, #37352f);
@@ -88,4 +109,128 @@ ol {
   outline: 2px solid var(--moon-accent, #2eaadc);
   outline-offset: 2px;
   border-radius: 3px;
+}
+
+/* ─── ProseMirror / Editor Styles ───────────────────────── */
+.tiptap-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tiptap-wrapper > div:not(.tiptap-toolbar) {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.tiptap-wrapper .tiptap-content {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ProseMirror {
+  padding: 32px 48px;
+  outline: none;
+  flex: 1 1 0;
+  min-height: 0;
+  line-height: 1.7;
+  width: 100%;
+  max-width: 100%;
+  color: var(--moon-fg, #37352f);
+  font-family: var(--moon-font-serif, 'Lyon-Text', 'Georgia', ui-serif, serif);
+  font-size: 16px;
+}
+
+.ProseMirror p {
+  margin: 0.5em 0;
+}
+
+.ProseMirror h1,
+.ProseMirror.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin: 1.4em 0 0.5em;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--moon-fg, #37352f);
+}
+
+.ProseMirror h1 {
+  font-size: 1.9em;
+  border-bottom: 1px solid var(--moon-borderSubtle, #dededa);
+  padding-bottom: 0.25em;
+}
+
+.ProseMirror h2 { font-size: 1.5em; }
+.ProseMirror h3 { font-size: 1.25em; }
+
+.ProseMirror code {
+  background: var(--moon-sidebarBg, #f1f1ef);
+  padding: 0.15em 0.35em;
+  border-radius: var(--moon-radii-sm, 3px);
+  font-size: 0.88em;
+  font-family: var(--moon-font-mono, 'JetBrains Mono', monospace);
+  color: var(--moon-fg, #37352f);
+}
+
+.ProseMirror pre {
+  background: var(--moon-sidebarBg, #f1f1ef);
+  padding: 14px 18px;
+  border-radius: var(--moon-radii-md, 6px);
+  overflow: auto;
+  border: 1px solid var(--moon-borderSubtle, #dededa);
+}
+
+.ProseMirror pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid var(--moon-accent, #2eaadc);
+  color: var(--moon-fgSecondary, #4f4e4a);
+  padding-left: 1em;
+  margin: 1em 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 0.5em 0 0.5em 1.5em;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.ProseMirror a.tiptap-link {
+  color: var(--moon-accent, #2eaadc);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ProseMirror a.tiptap-link.dead-link {
+  color: var(--moon-danger, #e03e3e);
+  text-decoration: line-through;
+  cursor: help;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: var(--moon-fgMuted, #9b9a95);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }

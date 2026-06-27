@@ -11,9 +11,9 @@
 // ─── Font families ────────────────────────────────────────────
 export const fontFamily = {
   // 衬线正文（标题、正文）
-  serif: `'Noto Serif', 'Source Han Serif SC', 'Source Han Serif CN', 'Songti SC', 'STSong', serif`,
+  serif: `'Lyon-Text', 'Georgia', ui-serif, serif`,
   // 中文优先，宋体回退
-  serifCJK: `'Source Han Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC', 'STSong', serif`,
+  serifCJK: `'Lyon-Text', 'Georgia', ui-serif, 'Source Han Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC', 'STSong', serif`,
   // 等宽（路径、ID、frontmatter key）
   mono: `'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace`,
   // 无衬线（UI 控件、按钮、菜单）—— Notion 用的是 sans-serif UI

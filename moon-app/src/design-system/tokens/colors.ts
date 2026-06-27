@@ -31,16 +31,16 @@ const slate = {
 } as const;
 
 const accent = {
-  light: '#2EAADC', // Notion 蓝链接 / icon
-  dark: '#7CB7E8',
-  'light-hover': '#2092C4',
-  'dark-hover': '#A3CFEF',
+  light: '#438B64', // Retro light green
+  dark: '#82C49F',
+  'light-hover': '#336E4D',
+  'dark-hover': '#A0D9B9',
 } as const;
 
-// OKF 契约蓝（属性面板中 OKF 字段用）
+// OKF 契约绿（属性面板中 OKF 字段用）
 const contract = {
-  light: '#2EAADC',
-  dark: '#7CB7E8',
+  light: '#438B64',
+  dark: '#82C49F',
 } as const;
 
 // Notion 来源灰（属性面板中 Notion 私有字段用）
@@ -111,7 +111,7 @@ export const lightColors: SemanticColors = {
 
   accent: accent.light,
   accentHover: accent['light-hover'],
-  accentMuted: 'rgba(46, 170, 220, 0.12)',
+  accentMuted: 'rgba(67, 139, 100, 0.12)',
 
   contract: contract.light,
   source: source.light,
@@ -140,7 +140,7 @@ export const darkColors: SemanticColors = {
 
   accent: accent.dark,
   accentHover: accent['dark-hover'],
-  accentMuted: 'rgba(124, 183, 232, 0.16)',
+  accentMuted: 'rgba(130, 196, 159, 0.16)',
 
   contract: contract.dark,
   source: source.dark,
