@@ -1,0 +1,29 @@
+scripts/
+native/
+.agents/
+.claude/
+
+# dependencies
+/node_modules
+.pnpm-store/
+
+# build output
+/dist
+/build
+
+# env
+.env
+.env.local
+.env.*.local
+
+# backup output
+/backup
+
+# logs
+*.log
+npm-debug.log*
+
+# editor / OS
+.DS_Store
+.vscode/
+.idea/

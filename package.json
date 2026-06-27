@@ -1,0 +1,35 @@
+{
+  "name": "bye-bye",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Stream personal cloud-doc workspaces (Notion / Lark / Yuque) into local OKF (Open Knowledge Format) markdown.",
+  "scripts": {
+    "start": "tsx bye-bye-notion/src/main.ts",
+    "dry-run": "tsx bye-bye-notion/scripts/dry-run.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "web": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build"
+  },
+  "dependencies": {
+    "@notionhq/client": "^5.22.0",
+    "dotenv": "^16.4.5",
+    "p-queue": "^8.0.1",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild"
+    ]
+  }
+}
