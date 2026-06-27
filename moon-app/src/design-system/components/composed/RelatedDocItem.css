@@ -1,0 +1,57 @@
+.moon-related-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--moon-radii-sm, 3px);
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--moon-font-sans, 'Inter', sans-serif);
+  font-size: var(--moon-fontSize-sm, 12px);
+  color: var(--moon-fg, #37352f);
+  cursor: pointer;
+  transition: background var(--moon-duration-fast, 120ms) var(--moon-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.moon-related-item:hover {
+  background: var(--moon-sidebarHoverBg, #e9e9e6);
+}
+
+.moon-related-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--moon-fgMuted, #9b9a95);
+}
+
+.moon-related-icon > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.moon-related-label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.moon-related-tag {
+  flex-shrink: 0;
+  font-size: var(--moon-fontSize-xs, 11px);
+  padding: 1px 6px;
+  border-radius: var(--moon-radii-sm, 3px);
+  background: var(--moon-sidebarBg, #f1f1ef);
+  color: var(--moon-fgMuted, #9b9a95);
+}
+
+.moon-related-item[data-ref='incoming'] .moon-related-tag {
+  color: var(--moon-accent, #2eaadc);
+}

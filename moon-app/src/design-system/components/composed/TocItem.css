@@ -1,0 +1,53 @@
+.moon-toc-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 26px;
+  padding-right: 8px;
+  border-radius: var(--moon-radii-sm, 3px);
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--moon-font-sans, 'Inter', sans-serif);
+  font-size: var(--moon-fontSize-sm, 12px);
+  color: var(--moon-fgSecondary, #4f4e4a);
+  cursor: pointer;
+  transition: background var(--moon-duration-fast, 120ms) var(--moon-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.moon-toc-item:hover {
+  background: var(--moon-sidebarHoverBg, #e9e9e6);
+}
+
+.moon-toc-item[data-active] {
+  color: var(--moon-accent, #2eaadc);
+  font-weight: 500;
+}
+
+.moon-toc-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--moon-fgMuted, #9b9a95);
+}
+
+.moon-toc-item[data-active] .moon-toc-icon {
+  color: var(--moon-accent, #2eaadc);
+}
+
+.moon-toc-icon > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.moon-toc-label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

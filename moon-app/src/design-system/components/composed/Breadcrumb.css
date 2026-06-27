@@ -1,0 +1,49 @@
+.moon-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--moon-font-sans, 'Inter', sans-serif);
+  font-size: var(--moon-fontSize-sm, 12px);
+  color: var(--moon-fgMuted, #9b9a95);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.moon-breadcrumb-root {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.moon-breadcrumb-sep {
+  display: inline-flex;
+  align-items: center;
+  color: var(--moon-fgMuted, #9b9a95);
+  flex-shrink: 0;
+}
+
+.moon-breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: var(--moon-radii-sm, 3px);
+  white-space: nowrap;
+  color: var(--moon-fgSecondary, #4f4e4a);
+}
+
+.moon-breadcrumb-item-clickable {
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--moon-duration-fast, 120ms) var(--moon-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.moon-breadcrumb-item-clickable:hover {
+  background: var(--moon-sidebarHoverBg, #f1f1ef);
+}
+
+.moon-breadcrumb-item[data-current] {
+  color: var(--moon-fg, #37352f);
+  font-weight: 500;
+}
