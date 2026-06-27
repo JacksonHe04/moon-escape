@@ -1,5 +1,6 @@
 // File System Access API 封装
 import type { FileEntry } from '@/types/document';
+import { joinYAML, splitYAML } from './frontmatter';
 
 /**
  * 跳过以 "." 开头的隐藏目录/文件（.git / .next / .idea / .DS_Store 等）。
@@ -16,24 +17,35 @@ export async function readDirectoryEntries(
   for await (const [name, child] of handle.entries()) {
     if (isHidden(name)) continue;
     if (child.kind === 'directory') {
+      let title = deslugify(name);
+      try {
+        const indexHandle = await (child as FileSystemDirectoryHandle).getFileHandle('index.md');
+        title = await readDocumentTitle(indexHandle, title);
+      } catch {
+        // 没有 index.md 的纯目录依旧允许显示，但标题退回目录名
+      }
       entries.push({
         kind: 'dir',
         name,
         path: '',
         handle: child as FileSystemDirectoryHandle,
+        title,
       });
     } else if (child.kind === 'file' && name.endsWith('.md')) {
+      if (name === 'index.md') continue;
+      const fileHandle = child as FileSystemFileHandle;
       entries.push({
         kind: 'file',
         name,
         path: '',
-        handle: child as FileSystemFileHandle,
+        handle: fileHandle,
+        title: await readDocumentTitle(fileHandle, deslugify(name.replace(/\.md$/i, ''))),
       });
     }
   }
   entries.sort((a, b) => {
     if (a.kind !== b.kind) return a.kind === 'dir' ? -1 : 1;
-    return a.name.localeCompare(b.name);
+    return (a.title ?? a.name).localeCompare(b.title ?? b.name, 'zh-Hans-CN');
   });
   return entries;
 }
@@ -44,6 +56,10 @@ export function slugify(title: string): string {
     .replace(/[\/\\]/g, '-')
     .replace(/\s+/g, '-')
     .toLowerCase();
+}
+
+export function deslugify(name: string): string {
+  return name.replace(/-/g, ' ').trim() || 'Untitled';
 }
 
 export function generateUniqueFilename(
@@ -94,6 +110,42 @@ export async function deleteEntry(
   await parentDir.removeEntry(name, { recursive: true });
 }
 
+export async function readTextFile(handle: FileSystemFileHandle): Promise<string> {
+  const file = await handle.getFile();
+  return await file.text();
+}
+
+export async function writeTextFile(
+  handle: FileSystemFileHandle,
+  text: string,
+): Promise<void> {
+  const writable = await handle.createWritable();
+  await writable.write(text);
+  await writable.close();
+}
+
+export async function readDocumentTitle(
+  handle: FileSystemFileHandle,
+  fallback: string,
+): Promise<string> {
+  try {
+    const { frontmatter } = splitYAML(await readTextFile(handle));
+    const title = frontmatter.title;
+    return typeof title === 'string' && title.trim() ? title.trim() : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export async function updateDocumentTitle(
+  handle: FileSystemFileHandle,
+  title: string,
+): Promise<void> {
+  const text = await readTextFile(handle);
+  const { frontmatter, body } = splitYAML(text);
+  await writeTextFile(handle, joinYAML({ ...frontmatter, title }, body));
+}
+
 export interface MdFileRef {
   handle: FileSystemFileHandle;
   path: string;
@@ -131,3 +183,54 @@ export async function getFileHandleByPath(
   return await currentDir.getFileHandle(parts[parts.length - 1]);
 }
 
+export async function getDirectoryHandleByPath(
+  rootDir: FileSystemDirectoryHandle,
+  relativePath: string,
+): Promise<FileSystemDirectoryHandle> {
+  const parts = relativePath.split('/').filter(Boolean);
+  let currentDir = rootDir;
+  for (const part of parts) {
+    currentDir = await currentDir.getDirectoryHandle(part);
+  }
+  return currentDir;
+}
+
+export function getParentPath(relativePath: string): string {
+  const parts = relativePath.split('/').filter(Boolean);
+  parts.pop();
+  return parts.join('/');
+}
+
+export function getBasename(relativePath: string): string {
+  const parts = relativePath.split('/').filter(Boolean);
+  return parts[parts.length - 1] ?? '';
+}
+
+export async function ensureDocumentContainer(
+  rootDir: FileSystemDirectoryHandle,
+  filePath: string,
+): Promise<{ dirHandle: FileSystemDirectoryHandle; indexHandle: FileSystemFileHandle; path: string }> {
+  if (filePath.endsWith('/index.md')) {
+    const dirPath = filePath.slice(0, -'/index.md'.length);
+    const dirHandle = await getDirectoryHandleByPath(rootDir, dirPath);
+    const indexHandle = await dirHandle.getFileHandle('index.md');
+    return { dirHandle, indexHandle, path: dirPath };
+  }
+
+  const parentPath = getParentPath(filePath);
+  const filename = getBasename(filePath);
+  const stem = filename.replace(/\.md$/i, '');
+  const parentDir = parentPath ? await getDirectoryHandleByPath(rootDir, parentPath) : rootDir;
+  const fileHandle = await getFileHandleByPath(rootDir, filePath);
+  const original = await readTextFile(fileHandle);
+  const dirHandle = await parentDir.getDirectoryHandle(stem, { create: true });
+  const indexHandle = await dirHandle.getFileHandle('index.md', { create: true });
+  await writeTextFile(indexHandle, original);
+  await deleteEntry(parentDir, filename);
+
+  return {
+    dirHandle,
+    indexHandle,
+    path: parentPath ? `${parentPath}/${stem}` : stem,
+  };
+}
