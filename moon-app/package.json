@@ -29,12 +29,16 @@
     "turndown": "^7.2.4"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^20.19.43",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/turndown": "^5.0.6",
+    "autoprefixer": "^10.5.2",
     "fake-indexeddb": "^6.2.5",
     "happy-dom": "^15.11.7",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1",
     "typescript": "^5",
     "vitest": "^2.1.9"
   }
