@@ -31,7 +31,7 @@ importers:
         specifier: ^5.9.0
         version: 5.9.3
 
-  web:
+  moon-app:
     dependencies:
       '@tiptap/extension-image':
         specifier: ^3.27.1
@@ -103,6 +103,25 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@20.19.43)(happy-dom@15.11.7)
+
+  moon-shot:
+    dependencies:
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
+      minisearch:
+        specifier: ^7.2.0
+        version: 7.2.0
+      yaml:
+        specifier: ^2.6.1
+        version: 2.9.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.20.0
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
 
 packages:
 

@@ -9,8 +9,8 @@
     "dry-run": "tsx bye-bye-notion/scripts/dry-run.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "web": "pnpm --filter web dev",
-    "web:build": "pnpm --filter web build"
+    "web": "pnpm --filter moon-app dev",
+    "web:build": "pnpm --filter moon-app build"
   },
   "dependencies": {
     "@notionhq/client": "^5.22.0",
