@@ -3,6 +3,7 @@ native/
 .agents/
 .claude/
 .screenshots/
+.playwright-cli/
 
 # dependencies
 /node_modules
