@@ -1,0 +1,98 @@
+:root {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --border: #e1e4e8;
+  --bg-soft: #f6f8fa;
+  --bg-soft-hover: #eef2f5;
+  --text-soft: #6a737d;
+  --text-soft-2: #57606a;
+  --accent: #ddf4ff;
+  --success: #2da44e;
+  --success-soft: #94d3a2;
+  --link: #0969da;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d1117;
+    --foreground: #c9d1d9;
+    --border: #30363d;
+    --bg-soft: #161b22;
+    --bg-soft-hover: #21262d;
+    --text-soft: #8b949e;
+    --text-soft-2: #6e7681;
+    --accent: #1f6feb33;
+    --success: #238636;
+    --success-soft: #2ea043;
+    --link: #58a6da;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+header h1 { font-size: 1.1rem; font-weight: 600; }
+header button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: 0.9rem;
+}
+header button:hover { background: var(--bg-soft-hover); }
+header button:disabled { color: var(--text-soft); cursor: not-allowed; }
+
+main { display: flex; flex: 1; min-height: 0; }
+
+#editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+.editor-toolbar button {
+  margin-left: auto;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--success);
+  background: var(--success);
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.editor-toolbar button:disabled {
+  background: var(--success-soft);
+  border-color: var(--success-soft);
+  cursor: not-allowed;
+}
