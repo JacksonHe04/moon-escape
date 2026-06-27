@@ -2,6 +2,7 @@ scripts/
 native/
 .agents/
 .claude/
+.screenshots/
 
 # dependencies
 /node_modules

@@ -42,5 +42,6 @@ parentId -> notion_parent_id
 - 禁止要未经用户的情况下删除 local/ 目录
 - 禁止对 Notion API 进行写操作  
 - 禁止提交 Personal 信息
-- Commit 规范（提交前必看）：./.trae/rules/git-commit-message.md
+- Commit 规范（提交前必看）：.agents/skills/git-commit/SKILL.md
 - 开发过程中产出的计划、报告等文档，需要放在 .agents/docs/ 中。
+- 务必使用 ./dev_setup.sh 来启动和重启开发服务
