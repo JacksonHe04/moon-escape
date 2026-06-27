@@ -1,20 +1,10 @@
 'use client';
 
 /**
- * WorkspaceSwitcher — 左栏顶部的工作区切换器。
- *
- * 点击展开菜单：
- * - 当前工作区名称（不可点）
- * - "切换目录" → 触发 onPick
- * - "重新授权" → 触发 onReauthorize（仅 status === 'needs-reauth'）
- * - 当前状态文字
+ * WorkspaceSwitcher — 左栏顶部的工作区切换器（灰色圆角边框包裹，去掉月亮图标与分割线）。
  */
 
-import { ChevronDown, FolderOpen, RefreshCw, AlertCircle } from 'lucide-react';
-import { useTheme } from '../../theme';
-import { Menu, type MenuItem } from '../primitives/Menu';
-import { IconButton } from '../primitives/IconButton';
-import './WorkspaceSwitcher.css';
+import { ChevronDown, RefreshCw, AlertCircle } from 'lucide-react';
 
 export type WorkspaceStatus =
   | 'unsupported'
@@ -36,73 +26,58 @@ export function WorkspaceSwitcher({
   onPick,
   onReauthorize,
 }: WorkspaceSwitcherProps) {
-  const { resolved } = useTheme();
-
-  const items: MenuItem[] = [
-    {
-      id: 'pick',
-      label: name ? '切换目录' : '选择目录',
-      icon: <FolderOpen size={14} />,
-      onSelect: onPick,
-      disabled: status === 'unsupported',
-    },
-    ...(status === 'needs-reauth'
-      ? [
-          {
-            id: 'reauth',
-            label: '重新授权',
-            icon: <RefreshCw size={14} />,
-            onSelect: onReauthorize,
-          } as MenuItem,
-        ]
-      : []),
-  ];
+  const isUnsupported = status === 'unsupported';
+  const needsReauth = status === 'needs-reauth';
 
   return (
-    <div className="moon-workspace">
-      <Menu
-        trigger={
-          <button type="button" className="moon-workspace-trigger" data-theme={resolved}>
-            <span className="moon-workspace-glyph">
-              <MoonLogo />
-            </span>
-            <span className="moon-workspace-name">{name ?? '未选择工作区'}</span>
-            <span className="moon-workspace-chevron">
-              <ChevronDown size={12} />
-            </span>
-          </button>
-        }
-        items={items}
-        align="start"
-      />
+    <div className="flex flex-col gap-1 p-4 pb-2 w-full">
+      {/* 工作区行：灰色圆角边框包裹，不要月亮 icon。背景比侧栏更深一点让边框可见 */}
+      <button
+        type="button"
+        onClick={onPick}
+        disabled={isUnsupported}
+        className="flex items-center gap-2.5 w-full text-left py-2.5 px-3.5 border border-borderStrong/60 rounded-lg bg-appBg hover:bg-sidebarHoverBg hover:border-accent/40 transition-all duration-120 select-none font-sans text-fg disabled:cursor-not-allowed focus:outline-none shadow-xs"
+        title={isUnsupported ? '浏览器不支持 File System Access API' : '点击切换工作区'}
+      >
+        <span className="flex-1 truncate text-[13px] font-semibold text-fg">
+          {name ?? '未选择工作区'}
+        </span>
+        {needsReauth ? (
+          <span
+            role="button"
+            className="flex items-center justify-center p-1 rounded hover:bg-sidebarActiveBg text-accent cursor-pointer transition-colors duration-120"
+            title="重新申请访问权限"
+            onClick={(e) => {
+              e.stopPropagation();
+              onReauthorize();
+            }}
+          >
+            <RefreshCw size={12} className="animate-spin-slow" />
+          </span>
+        ) : (
+          <ChevronDown size={13} className="text-fgMuted flex-shrink-0" />
+        )}
+      </button>
+
+      {/* 状态提示 */}
       {status === 'needs-reauth' && (
-        <div className="moon-workspace-warn">
-          <AlertCircle size={12} />
+        <div className="flex items-center gap-1.5 px-3.5 py-1 text-xs text-warning font-sans mt-0.5">
+          <AlertCircle size={12} className="flex-shrink-0" />
           <span>权限失效，请重新授权</span>
         </div>
       )}
       {status === 'denied' && (
-        <div className="moon-workspace-warn">
-          <AlertCircle size={12} />
-          <span>权限被拒绝，缓存已清</span>
+        <div className="flex items-center gap-1.5 px-3.5 py-1 text-xs text-danger font-sans mt-0.5">
+          <AlertCircle size={12} className="flex-shrink-0" />
+          <span>权限被拒绝</span>
         </div>
       )}
       {status === 'unsupported' && (
-        <div className="moon-workspace-warn">
-          <AlertCircle size={12} />
-          <span>浏览器不支持 File System Access API</span>
+        <div className="flex items-center gap-1.5 px-3.5 py-1 text-xs text-danger font-sans mt-0.5">
+          <AlertCircle size={12} className="flex-shrink-0" />
+          <span>请用 Chrome / Edge / Arc</span>
         </div>
       )}
     </div>
-  );
-}
-
-// 简易 MOON 字标（项目 logo），先用文字+月相图形占位
-function MoonLogo() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="8" cy="8" r="6" fill="currentColor" />
-      <circle cx="11" cy="6" r="5" fill="var(--moon-sidebarBg, #f1f1ef)" />
-    </svg>
   );
 }

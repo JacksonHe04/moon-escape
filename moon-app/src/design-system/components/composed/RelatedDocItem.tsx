@@ -1,17 +1,11 @@
 'use client';
 
 /**
- * RelatedDocItem — 关联文档行。
- *
- * 显示：icon（默认文档）+ 文档名 + 标签（"引用" / "被引用"）。
- *
- * refType:
- * - 'outgoing' → 当前文档链出去 → 「引用」
- * - 'incoming' → 别人链过来 → 「被引用」
+ * RelatedDocItem — 关联文档行（完全重构为 Tailwind CSS，消除 RelatedDocItem.css 依赖，并统一使用 Lucide 图标）。
  */
 
 import { type ReactNode } from 'react';
-import './RelatedDocItem.css';
+import { FileText } from 'lucide-react';
 
 export type RelatedRefType = 'outgoing' | 'incoming';
 
@@ -23,29 +17,23 @@ export interface RelatedDocItemProps {
 }
 
 export function RelatedDocItem({ label, refType, icon, onClick }: RelatedDocItemProps) {
+  const tagClasses = refType === 'outgoing'
+    ? 'bg-accentMuted text-accent'
+    : 'bg-sidebarActiveBg text-fgMuted';
+
   return (
     <button
       type="button"
-      className="moon-related-item"
-      data-ref={refType}
       onClick={onClick}
+      className="flex items-center gap-2 w-full text-left py-1.5 px-2.5 rounded transition-colors duration-120 select-none font-sans text-xs hover:bg-sidebarHoverBg text-fgSecondary hover:text-fg focus:outline-none"
     >
-      <span className="moon-related-icon">{icon ?? <DefaultGlyph />}</span>
-      <span className="moon-related-label">{label}</span>
-      <span className="moon-related-tag">{refType === 'outgoing' ? '引用' : '被引用'}</span>
+      <span className="flex items-center justify-center flex-shrink-0 text-fgMuted">
+        {icon ?? <FileText size={14} />}
+      </span>
+      <span className="truncate flex-1 font-medium">{label}</span>
+      <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0 tracking-wider ${tagClasses}`}>
+        {refType === 'outgoing' ? '引用' : '被引用'}
+      </span>
     </button>
-  );
-}
-
-function DefaultGlyph() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M3.5 2.5h6L12.5 5.5v8a1 1 0 01-1 1h-8a1 1 0 01-1-1v-10a1 1 0 011-1z"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
