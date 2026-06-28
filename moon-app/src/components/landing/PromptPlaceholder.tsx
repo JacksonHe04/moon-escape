@@ -9,9 +9,19 @@ interface PromptPlaceholderProps {
   height: number;
   ratio: string;
   className?: string;
+  imageClassName?: string;
+  objectPosition?: string;
 }
 
-export function PromptPlaceholder({ id, width, height, ratio, className = '' }: PromptPlaceholderProps) {
+export function PromptPlaceholder({
+  id,
+  width,
+  height,
+  ratio,
+  className = '',
+  imageClassName = '',
+  objectPosition = 'center',
+}: PromptPlaceholderProps) {
   const [copied, setCopied] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -47,7 +57,8 @@ export function PromptPlaceholder({ id, width, height, ratio, className = '' }: 
           alt={`Visual ${id}`}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out z-20 ${
             imgLoaded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
+          } ${imageClassName}`}
+          style={{ objectPosition }}
         />
       )}
 
